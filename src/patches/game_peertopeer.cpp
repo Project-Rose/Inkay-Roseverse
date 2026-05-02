@@ -26,7 +26,8 @@
 #include <string_view>
 using namespace std::string_view_literals;
 
-static struct {
+static struct
+{
     std::array<uint64_t, 3> tid;
     uint16_t version;
     uint32_t min_port_addr;
@@ -51,27 +52,36 @@ static struct {
     },
 };
 
-static void generic_peertopeer_patch() {
+static void generic_peertopeer_patch()
+{
     uint64_t tid = OSGetTitleID();
     uint16_t title_version = 0;
-    if (const auto version_opt = get_current_title_version(); !version_opt) {
+    if (const auto version_opt = get_current_title_version(); !version_opt)
+    {
         DEBUG_FUNCTION_LINE("Failed to detect current title version");
         return;
-    } else {
+    }
+    else
+    {
         title_version = *version_opt;
-        DEBUG_FUNCTION_LINE("Title version detected: %d", title_version);
+        DEBUG_FUNCTION_LINE("Title version detected: %d",
+                            title_version);
     }
 
-    for (const auto &patch: generic_patch_games) {
-        if (std::ranges::find(patch.tid, tid) == patch.tid.end()) continue;
+    for (const auto &patch : generic_patch_games)
+    {
+        if (std::ranges::find(patch.tid, tid) == patch.tid.end())
+            continue;
 
         std::optional<OSDynLoad_NotifyData> game = search_for_rpl(patch.rpx);
-        if (!game) {
+        if (!game)
+        {
             DEBUG_FUNCTION_LINE("Couldn't find game rpx! (%s)", patch.rpx.data());
             return;
         }
 
-        if (title_version != patch.version) {
+        if (title_version != patch.version)
+        {
             DEBUG_FUNCTION_LINE("Unexpected title version. Expected %d but got %d (%s)", patch.version, title_version,
                                 patch.rpx.data());
             continue;
@@ -89,13 +99,16 @@ static void generic_peertopeer_patch() {
     }
 }
 
-static void minecraft_peertopeer_patch() {
+static void minecraft_peertopeer_patch()
+{
     std::optional<OSDynLoad_NotifyData> minecraft = search_for_rpl("Minecraft.Client.rpx"sv);
-    if (!minecraft) {
+    if (!minecraft)
+    {
         DEBUG_FUNCTION_LINE("Couldn't find minecraft rpx!");
         return;
     }
-    if (const auto version_opt = get_current_title_version(); !version_opt || *version_opt != 688) {
+    if (const auto version_opt = get_current_title_version(); !version_opt || *version_opt != 688)
+    {
         DEBUG_FUNCTION_LINE("Wrong mincecraft version detected");
         return;
     }
@@ -114,18 +127,23 @@ static void minecraft_peertopeer_patch() {
     // blr
 }
 
-void peertopeer_patch() {
-    if (!Config::connect_to_network) {
+void peertopeer_patch()
+{
+    if (!Config::connect_to_network)
+    {
         return;
     }
 
     uint64_t tid = OSGetTitleID();
     if (tid == 0x00050000'101D7500 || // EUR
         tid == 0x00050000'101D9D00 || // USA
-        tid == 0x00050000'101DBE00) { // JPN
+        tid == 0x00050000'101DBE00)
+    { // JPN
 
         minecraft_peertopeer_patch();
-    } else {
+    }
+    else
+    {
         generic_peertopeer_patch();
     }
 }
