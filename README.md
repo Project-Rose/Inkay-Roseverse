@@ -17,7 +17,7 @@ This version of [Inkay](https://github.com/PretendoNetwork/Inkay) lets you conne
 Inkay (Roséverse) requires a homebrewed Wii U running the latest version of the [Aroma](https://github.com/wiiu-env/Aroma) environment, configured for coldboot (autoboot). Other configurations (specifically lacking coldboot) may cause issues with SpotPass connections to Pretendo's servers. Older homebrew environments (such as Tirumissu, Haxchi, etc.) and hackless methods aren't supported. If you haven't already, homebrew your Wii U using [this guide](https://wiiu.hacks.guide/)!
 
 > [!NOTE]
-> Inkay (Roséverse) is currently unavailable on the [HB App Store](https://hb-app.store) due to complications with their package management system. We are actively working to find ways to put Inkay (Roséverse) onto the Hb App Store, and the link will be posted here once it is available.
+> Inkay (Roséverse) is currently unavailable on the [HB App Store](https://hb-app.store) due to complications with their package management system. We are actively working to find ways to put Inkay (Roséverse) onto the HB App Store, and the link will be posted here once it is available.
 
 ## Installation
 This installation process requires a computer or any other device that can read SD cards. You can alternatively use FTP using the [FTPiiU plugin](https://github.com/wiiu-env/ftpiiu_plugin) and [FileZilla](https://filezilla-project.org). The process below only covers the computer method. Please follow these steps very closely:
@@ -28,7 +28,7 @@ This installation process requires a computer or any other device that can read 
 3. Place `Inkay-pretendo.wps` (**WPS**) in the Aroma plugins folder on your SD card (usually `sd:/wiiu/environments/aroma/plugins`). If it asks you to replace the existing file, replace it.
 4. Eject the SD card from your device, and insert the SD card into your Wii U and turn it on. 
 
-An Aroma notification should pop up stating "**Using Pretendo Network (Roséverse)**" once it is successfully installed. Then you can click the Miiverse icon to access Roséverse. If it does have "**(Roséverse)**" in the notification, it isn't installed correctly.
+An Aroma notification should pop up stating "**Using Pretendo Network (Roséverse)**" once it is successfully installed. Then you can click the Miiverse icon to access Roséverse. If it doesn't have "**(Roséverse)**" in the notification, it isn't installed correctly.
 
 # Configuration
 Hold L + Down + Start to open the Wii U Plugin Menu, then scroll down and click Inkay (Roséverse). From here, there are several things that you can configure:
