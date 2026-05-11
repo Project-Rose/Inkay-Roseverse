@@ -204,6 +204,7 @@ static void base64_encode(const unsigned char *input, size_t len, char *output)
 }
 
 static char cached_slot_base64[SERVICETOKEN_MAX_SIZE];
+static int cached_slot = -1;
 static char cached_code_serial[21];
 static bool cachedMCP = false;
 
@@ -268,21 +269,38 @@ static void obfuscate_string(char *str, size_t len)
 
 void init_olive_token()
 {
+    //i fixed the stupid mother fucker.
+    //apparently. i forgot to initialize act, i was scared by how limited i was so i never thought of it?
+    //i also remember getting Miiverse to crash (applet) maybe my coding sucked or my implementation was incorrect.
+
+    //nonetheless, its fixed. enjoy :p - david "Jay" Soda
+    //I DID NOT VIBE CODE THIS! I MADE IT ALL MYSELF! 5 HOURS OF CODING, RESEARCHING, TESTING! ALL FUCKING WORTH IT!
+    nn::act::Initialize();
     int slotNo = nn::act::GetSlotNo();
+
+    if (slotNo == cached_slot)
+    {
+        DEBUG_FUNCTION_LINE("Slot number is the same than last! %i", slotNo);
+        //Lets not clean the token, since this is not an error, just finish act early...
+        //if we dont finish act im fucking scared were gonna memory leak or sum shit
+        nn::act::Finalize();
+        return;
+    }
 
     if (slotNo == 0)
     {
         DEBUG_FUNCTION_LINE("Unloaded account! or Unexistant!");
+        cached_slot_base64[0] = '\0';
+        nn::act::Finalize();
         return;
     }
-
-    DEBUG_FUNCTION_LINE("New slot number is %i", slotNo);
 
     unsigned int pid = nn::act::GetPrincipalId();
     if (pid == 0)
     {
         DEBUG_FUNCTION_LINE("PID at slot no %i is invalid!", slotNo);
         cached_slot_base64[0] = '\0';
+        nn::act::Finalize();
         return;
     }
 
@@ -294,6 +312,7 @@ void init_olive_token()
         DEBUG_FUNCTION_LINE("Failed to create olive folder");
         ShowNotification("Failed to create folder to store Roséverse auth data.");
         cached_slot_base64[0] = '\0';
+        nn::act::Finalize();
         return;
     }
 
@@ -311,6 +330,7 @@ void init_olive_token()
         DEBUG_FUNCTION_LINE("File path overflow");
         ShowNotification("Internal path error for Roséverse.");
         cached_slot_base64[0] = '\0';
+        nn::act::Finalize();
         return;
     }
 
@@ -327,6 +347,7 @@ void init_olive_token()
             ShowNotification("Failed to read access key for Roséverse.");
             fclose(in);
             cached_slot_base64[0] = '\0';
+            nn::act::Finalize();
             return;
         }
 
@@ -346,6 +367,7 @@ void init_olive_token()
             DEBUG_FUNCTION_LINE("Generated empty password");
             ShowNotification("Failed to generate account key for Roséverse.");
             cached_slot_base64[0] = '\0';
+            nn::act::Finalize();
             return;
         }
 
@@ -356,6 +378,7 @@ void init_olive_token()
             DEBUG_FUNCTION_LINE("Failed to create token file");
             ShowNotification("Failed to save access key for Roséverse.");
             cached_slot_base64[0] = '\0';
+            nn::act::Finalize();
             return;
         }
 
@@ -365,6 +388,7 @@ void init_olive_token()
             ShowNotification("Failed to write access key for Roséverse.");
             fclose(out);
             cached_slot_base64[0] = '\0';
+            nn::act::Finalize();
             return;
         }
 
@@ -384,6 +408,9 @@ void init_olive_token()
 
     char miiImageUrl[257];
     nnactGetMiiImageUrlEx(miiImageUrl, slotNo);
+
+    //nn::act is normally not utilized anymore after this.
+    nn::act::Finalize();
 
     // Check if URL contains the Nintendo Account secure domain anywhere
     int isNNAcc = strstr(miiImageUrl,
@@ -410,6 +437,9 @@ void init_olive_token()
         cached_slot_base64[0] = '\0';
         return;
     }
+
+    cached_slot = slotNo;
+    DEBUG_FUNCTION_LINE("New slot number is %i", slotNo);
 
     DEBUG_FUNCTION_LINE("Token initialized, Base64 length: %zu", strlen(cached_slot_base64));
 }
