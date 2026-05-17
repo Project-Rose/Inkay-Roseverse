@@ -1,45 +1,46 @@
-# Inkay - Aroma patches for Pretendo
 
-[![Pretendo network logo](https://github.com/PretendoNetwork/website/raw/master/public/assets/images/opengraph/opengraph-image.png)](https://pretendo.network)
+# Inkay (Roséverse)
+<img width="1000" height="250" alt="Inkay (Roséverse) by Project Rosé (README banner)" src="https://github.com/user-attachments/assets/be3959c7-58ce-4d88-87f7-db03bb4cf9a0" />
 
-Inkay is an Aroma/WUPS plugin that patches various Nintendo Network URLs on a Wii U to use Pretendo Network instead. It also (for the time being) bypasses SSL verification in most cases. It redirects Nintendo Network in:
+[![GitHub release](https://img.shields.io/github/release/Project-Rose/Inkay-Roseverse.svg)](https://github.com/Project-Rose/Inkay-Roseverse/releases) [![Github all releases](https://img.shields.io/github/downloads/Project-Rose/Inkay-Roseverse/total.svg)](https://gitHub.com/Project-Rose/Inkay-Roseverse/releases) [![GitHub License](https://img.shields.io/github/license/Project-Rose/Inkay-Roseverse)](https://github.com/Project-Rose/Inkay-Roseverse/blob/master/LICENSE) [![Discord server](https://img.shields.io/discord/1277130014357327873?color=5865f2&label=Discord)](https://discord.gg/AaTsXndGun) [![Services Health](https://projectrose.montastic.io/badge)](https://projectrose.montastic.io) 
 
-- IOSU-side connections (Friends, SpotPass, accounts etc.)
-- Account Settings
-- NNCS
-- Nintendo eShop
-- Miiverse (in-game)
-- Miiverse applet
+This version of [Inkay](https://github.com/PretendoNetwork/Inkay) lets you connect to [Roséverse](https://miiverse.projectrose.cafe/), Project Rose's Miiverse revival, instead of Pretendo's [Juxtaposition (Juxt)](https://juxt.pretendo.network), while keeping connections to other Pretendo services intact. Read more about Inkay in the [original repository](https://github.com/PretendoNetwork/Inkay).
 
-Inkay also includes game-specific patches to add extra features:
-- Modpack-specific matchmaking for global, regional rooms (by simulating extra DLC) - **Mario Kart 8**
-- P2P port override for better connection stability (if you port forward) - **Minecraft: Wii U Edition**, **Mario Kart 8**, **Splatoon**
+> [!NOTE]
+> This patcher is for the Wii U, not 3DS.
 
+> [!IMPORTANT]
+> This plugin will **REPLACE** your existing Inkay plugin. If you want to switch back to Juxt, or if you're having any issues with the plugin, you can always reinstall the original Inkay version from the [Aroma Updater](https://github.com/wiiu-env/AromaUpdater) app on your Wii U console. Please read more details below.
+
+# Getting Started
 ## Requirements
-Inkay is only supported on the release version of Aroma configured for autoboot/coldboot. Other configurations (specifically lacking coldboot) may cause issues with SpotPass.
+Inkay (Roséverse) requires a homebrewed Wii U running the latest version of the [Aroma](https://github.com/wiiu-env/Aroma) environment, configured for coldboot (autoboot). Other configurations (specifically lacking coldboot) may cause issues with SpotPass connections to Pretendo's servers. Older homebrew environments (such as Tiramisu, Haxchi, etc.) and hackless methods aren't supported. If you haven't already, homebrew your Wii U using [this guide](https://wiiu.hacks.guide/)! If you are on the Tiramisu CFW, you can easily upgrade to the Aroma CFW using [this guide](https://wiki.hacks.guide/wiki/Wii_U:Moving_from_Tiramisu_to_Aroma).
 
-## Safety
-Inkay's patches are all temporary, and only applied in-memory without modifying your console. The SSL patch, while also temporary, could reduce the overall security of your console while active - this is because it no longer checks if a server is verified. However, this does not apply to the Internet Browser, where SSL still works as expected.
+> [!NOTE]
+> Inkay (Roséverse) is currently unavailable on the [HB App Store](https://hb-app.store) due to complications with their package management system. We are actively working to find ways to put Inkay (Roséverse) onto the HB App Store, and the link will be posted here once it is available.
 
-## Compiling - Docker
-Inkay's dependencies and build tooling can be handled as a container, which is recommended for WUPS plugins. Using `docker` or `podman`:
-```shell
-docker build -t inkay .
-docker run --rm -v $(pwd):/app inkay make
-# you can replace "make" with other commands - e.g. make clean
-```
-If using `podman` on SELinux systems (like Fedora Linux), you might need to use `$(pwd):/app:Z` instead of `$(pwd):/app`.
+## Installation
+This installation process requires a computer or any other device that can read SD cards. You can alternatively use FTP using the [FTPiiU plugin](https://github.com/wiiu-env/ftpiiu_plugin) and [FileZilla](https://filezilla-project.org). The process below only covers the computer method. Please follow these steps very closely:
 
-## Compiling - System
-Inkay has the following dependencies aside from devkitPPC and wut:
-- [WiiUPluginSystem](https://github.com/wiiu-env/WiiUPluginSystem)
-- [WiiUModuleSystem](https://github.com/wiiu-env/WiiUModuleSystem)
-- [libmocha](https://github.com/wiiu-env/libmocha)
-- [libkernel](https://github.com/wiiu-env/libkernel/)
-- [libnotifications](https://github.com/wiiu-env/libnotifications/)
-- [libfunctionpatcher](https://github.com/wiiu-env/libfunctionpatcher)
+1. Turn off your Wii U and eject the SD card. Insert the SD card into your device.
+1. Download the [latest release](https://github.com/Project-Rose/Inkay-Roseverse/releases) of both `Inkay-pretendo.wms` and `Inkay-pretendo.wps`.
+2. Place `Inkay-pretendo.wms` (**WMS**) in the Aroma modules folder on your SD card (usually `sd:/wiiu/environments/aroma/modules`). If it asks you to replace the existing file, replace it.
+3. Place `Inkay-pretendo.wps` (**WPS**) in the Aroma plugins folder on your SD card (usually `sd:/wiiu/environments/aroma/plugins`). If it asks you to replace the existing file, replace it.
+4. Eject the SD card from your device, and insert the SD card into your Wii U and turn it on. 
 
-Each of these should be `make install`-able. After that, you can compile Inkay with `make`.
+An Aroma notification should pop up stating "**Using Pretendo Network (Roséverse)**" once it is successfully installed. Then you can click the Miiverse icon to access Roséverse. If it doesn't have "**(Roséverse)**" in the notification, it isn't installed correctly.
 
-## TODO
-See [Issues](https://github.com/PretendoNetwork/Inkay/issues).
+# Configuration
+Hold L + Down + Start to open the Wii U Plugin Menu, then scroll down and click Inkay (Roséverse). From here, there are several things that you can configure:
+- Network selection > **Connect to Pretendo Network** - Connect to Pretendo Network and Roséverse instead of the Nintendo Network.
+- Other settings > **Reset WaraWara Plaza (for Roséverse)** - Force refresh the WaraWara Plaza and pull new WaraWara Plaza data from Project Rosé servers. This is useful if the Juxtaposition plaza still appears after the first installation.
+
+An Aroma notification should tell you if the patch is enabled every time you boot up your console.
+
+# Credits
+- [Pretendo Network](https://pretendo.network): For the original [Inkay](https://github.com/PretendoNetwork/Inkay) and coordaniting support, among other things.
+- All the people who helped worked on this project, you can see them at https://projectrose.cafe; also, any others who are not mentioned.
+
+# Issues?
+> [!NOTE]
+If you find any issues with **the patcher itself** or have any suggestions, please open a GitHub Issue [here](https://github.com/Project-Rose/Inkay-Roseverse/issues). If you need support for Roséverse itself or have any questions that aren't answered here, please ask in our [Discord server](https://discord.gg/AaTsXndGu), which is more active.
